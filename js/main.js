@@ -27,7 +27,7 @@ function newgame(){
             do{
                 cont = false;
                 for(j=0;j<4;j++){
-                    if(choices[j] == a || choices[j] == answer){  
+                    if(choices[j] == a || a == answer){  
                         a = Math.floor(Math.random()*108);
                         cont = true;
                     }
