@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    color: #eeeeee;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 40px;
+    box-sizing: border-box;
+}
+body{
+    background-image: url("../img/baner.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: #222222;
+    margin: auto;
+    opacity: 0.9;
+
+    width: 600px;
+    height: 100px;
+    margin-bottom: 25px;
+}
+#main{
+    background-color: #222222;
+    opacity: 0.9;
+
+    margin: auto;
+
+    position: relative;
+    overflow: hidden;   
+
+    width: 600px;
+    height: 600px;
+}
