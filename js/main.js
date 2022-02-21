@@ -1,55 +1,79 @@
-answer = 0;
-document.getElementById("menu").style.top = "0px";
-document.getElementById("game").style.display = "none";
+const NUMBER_OF_CHOICES = 4;
+
+const imageDiv = document.querySelector("#g_image");
+const choicesDiv = document.querySelector("#g_choices");
+
+const menuDiv = document.querySelector("#menu");
+const gameDiv = document.querySelector("#game");
+
+menuDiv.style.top = "0px";
+gameDiv.style.display = "none";
 
 document.getElementById("b1").onclick=function(){
-    closemenu();
-    setTimeout(newgame, 700);
+    closeMenu();
+    setTimeout(newGame, 700);
 }
 
-function closemenu(){
-    document.getElementById("menu").style.top = "-600px";
-    document.getElementById("game").style.display = "flex";
+function closeMenu(){
+    menuDiv.style.top = "-600px";
+    gameDiv.style.display = "flex";
 }
-function openmenu(){
-    document.getElementById("menu").style.top = "0px";
-    document.getElementById("game").style.display = "none";
+function openMenu(){
+    menuDiv.style.top = "0px";
+    gameDiv.style.display = "none";
 }
-function newgame(){
-    document.getElementById("g_choices").innerHTML = "";
-    answer = Math.floor(Math.random()*108); // the number you have to guess
-    x = Math.floor(Math.random()*4); // which button is the right one
-    choices = []; // the choices
-    console.log(answer, x);
-    for(i=0;i<4;i++){
-        a = Math.floor(Math.random()*108);
-        if(!(i == 0)){
-            do{
-                cont = false;
-                for(j=0;j<4;j++){
-                    if(choices[j] == a || choices[j] == answer){  
-                        a = Math.floor(Math.random()*108);
-                        cont = true;
-                    }
-                }
-            }while(cont);
-        }
-        choices[i] = a;
+function pickIndex(except){
+    let i;
+    do {
+        i = Math.floor(Math.random() * hiragana.length);
+        // pick a new number as long as we have an overlap
+    }while(except.includes(i));
+    return i;
+}
+function newGame(){
+    choicesDiv.innerHTML = "";
+
+    // Pick the correct one
+    correctIndex = Math.floor(Math.random()*hiragana.length); 
+
+    //Displayed options starting from the correct one
+    let choices = [correctIndex]; 
+
+    //Add the rest
+    for(let i=0; i<NUMBER_OF_CHOICES-1;i++){
+        choices.push(pickIndex(choices));
     }
-    choices[x] = answer; // overwrite the right answer
-    console.log(choices,answer, x);
-    document.getElementById("g_image").innerHTML = hira1[answer] + (x+1);
-    for(i=0;i<4;i++){
-        document.getElementById("g_choices").innerHTML += "<div class='g_buttons' onclick='choose("+ choices[i] +")'>"+ hira2[choices[i]] +"</div>";
+
+    //Make sure the correct index is not first
+    choices = shuffle(choices);
+
+    let choiceString = "";
+    for (const choice of choices) {
+      choiceString += `<button class="g_buttons" onclick="answer(${choice})">${romaji[choice]}</button>`;
     }
+  
+    imageDiv.innerText = hiragana[correctIndex];
+    choicesDiv.innerHTML = choiceString;
 }
-function choose(a){
-    if(a == answer){
-        console.log("Won");
-        newgame();
+function answer(index){
+    if (index == correctIndex) {
+        console.log('Won');
+        newGame();
     }else{
-        console.log("Lost");
+        console.log('Lost');
     }
 }
 
-// gotta upgrade this code so its readible, but it works for now
+function shuffle(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+    
+        // Generate random number
+        var j = Math.floor(Math.random() * (i + 1));
+                    
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+        
+    return array;
+ }
